@@ -2,33 +2,51 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /*
- * Clase que hereda de Thread para representar un hilo con un nombre específico.
+ * Hilo.java
+ * Esta clase extiende Thread para crear un hilo que ejecutará una tarea con un nombre definido.
  */
-package poop12;
+
+package poop12extra;
 
 /**
- * Clase Hilo que extiende la clase Thread.
- * 
- * @author poo03alu24
+ * Clase Hilo
+ * Extiende la clase Thread para definir un hilo que ejecuta una tarea.
+ * Permite personalizar el nombre del hilo y sobreescribe el método run()
+ * para ejecutar la tarea deseada.
  */
 public class Hilo extends Thread {
 
-    // Constructor para inicializar el hilo con un nombre.
+    private static int contador = 0; // Recurso compartido entre hilos
+
+    /**
+     * Constructor de la clase Hilo
+     * Permite asignar un nombre al hilo.
+     *
+     * @param name El nombre del hilo
+     */
     public Hilo(String name) {
         super(name);
     }
 
     /**
-     * Método `run` que se ejecutará cuando el hilo inicie.
-     * En este método, se imprimen 10 iteraciones junto con el nombre del hilo.
+     * Método sincronizado incrementarContador
+     * Incrementa el contador en 1 de manera sincronizada para evitar conflictos
+     * cuando varios hilos intentan acceder al contador simultáneamente.
+     */
+    public synchronized void incrementarContador() {
+        contador++;
+        System.out.println("Hilo " + getName() + " incremento el contador a: " + contador);
+    }
+
+    /**
+     * Método run()
+     * Este método es ejecutado cuando el hilo inicia. En este punto, se define
+     * la tarea específica que el hilo debe realizar.
+     * Sobreescribe el método run() de la clase Thread.
      */
     @Override
     public void run() {
-        for (int i = 0; i < 10; i++) {
-            System.out.println("Iteracion " + i + " del hilo " + getName());
-        }
-        System.out.println("Termina " + getName());
+        incrementarContador(); // Llama al método sincronizado
     }
 }

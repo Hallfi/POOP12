@@ -3,26 +3,38 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 /*
- * Clase que implementa Runnable para representar una tarea ejecutable en un hilo.
+ * HiloR.java
+ * Implementa la interfaz Runnable para definir un hilo mediante el método run().
  */
-package poop12;
+
+package poop12extra;
 
 /**
- * Clase HiloR que implementa la interfaz Runnable.
- * 
- * @author poo03alu24
+ * Clase HiloR
+ * Implementa Runnable para definir una tarea que puede ser ejecutada por un hilo.
+ * A diferencia de la clase Hilo, esta clase no extiende Thread directamente.
  */
 public class HiloR implements Runnable {
 
+    private static int contador = 0; // Recurso compartido entre hilos
+
     /**
-     * Método `run` que ejecuta la tarea del hilo.
-     * Imprime 10 iteraciones junto con el nombre del hilo que lo ejecuta.
+     * Método sincronizado incrementarContador
+     * Incrementa el contador en 1 de manera sincronizada para evitar conflictos
+     * cuando varios hilos intentan acceder al contador simultáneamente.
+     */
+    public synchronized void incrementarContador() {
+        contador++;
+        System.out.println("Hilo (Runnable) incremento el contador a: " + contador);
+    }
+
+    /**
+     * Método run()
+     * Este es el método abstracto de la interfaz Runnable que debe implementarse.
+     * Define la tarea que se ejecutará cuando el hilo sea iniciado.
      */
     @Override
     public void run() {
-        for (int i = 0; i < 10; i++) {
-            System.out.println("Iteracion " + i + " del hilo " + Thread.currentThread().getName());
-        }
-        System.out.println("Termina el hilo " + Thread.currentThread().getName());
+        incrementarContador(); // Llama al método sincronizado
     }
 }
